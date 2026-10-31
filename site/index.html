@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>404 Engineering</title>
+  <meta name="description" content="404 Engineering: independent hardware and software projects — an autonomous trail-following drone and a physics-based packaging line simulator.">
+  <meta name="theme-color" content="#0b1a2b">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="404 Engineering home">
+      <span class="brand-mark">404</span><span class="brand-word">ENGINEERING</span>
+    </a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#projects">Projects</a>
+      <a href="#drone">Drone</a>
+      <a href="#simulator">Simulator</a>
+      <a href="#about">About</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <!-- Hero -->
+    <section class="hero">
+      <p class="eyebrow">// status: building</p>
+      <h1>Hardware not found.<br><span class="accent">So we build it.</span></h1>
+      <p class="lede">404 Engineering is an independent workshop for embedded systems, robotics and industrial
+        automation. Every project is designed from first principles, documented in the open and built on the bench.</p>
+      <div class="hero-meta">
+        <div><span class="k">projects</span><span class="v">2 active</span></div>
+        <div><span class="k">repositories</span><span class="v">5 public</span></div>
+        <div><span class="k">disciplines</span><span class="v">firmware · CV · controls · sim</span></div>
+      </div>
+      <div class="cta">
+        <a class="btn" href="#projects">View projects</a>
+        <a class="btn ghost" href="https://github.com/404-Engineering" rel="noopener">GitHub ↗</a>
+      </div>
+    </section>
+
+    <!-- Project index -->
+    <section id="projects" class="section">
+      <header class="section-head">
+        <span class="sheet">SHEET 01</span>
+        <h2>Projects</h2>
+      </header>
+      <div class="index-grid">
+        <a class="index-card" href="#drone">
+          <span class="tag">ROBOTICS · EMBEDDED</span>
+          <h3>Following Drone</h3>
+          <p>A custom quadcopter that follows a jeep down off-road trails at up to 20 mph and maps the trail in 3D with an onboard stereo camera.</p>
+          <span class="status"><i class="dot"></i>Active · M1 of 5</span>
+        </a>
+        <a class="index-card" href="#simulator">
+          <span class="tag">AUTOMATION · SIMULATION</span>
+          <h3>Line Simulator</h3>
+          <p>A physics-based simulator for packaging and filling lines that runs real Allen-Bradley PLC programs against a virtual line and measures throughput.</p>
+          <span class="status"><i class="dot"></i>Active · Phase 0 spike</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Following Drone -->
+    <section id="drone" class="section">
+      <header class="section-head">
+        <span class="sheet">SHEET 02</span>
+        <h2>Following Drone</h2>
+        <a class="repo" href="https://github.com/404-Engineering/Following-Drone" rel="noopener">404-Engineering/Following-Drone ↗</a>
+      </header>
+
+      <p class="intro">A quadcopter that follows the jeep on off-road trails and builds 3D maps of the trail with an onboard
+        ZED stereo camera. A Jetson Orin Nano handles mapping and follow logic; Raspberry Pi Pico 2 modules run the flight
+        controller, radio and sensors, all on one CAN bus. A comm board in the jeep broadcasts its GPS position as a beacon
+        and relays operator commands.</p>
+
+      <div class="callout">
+        <span class="callout-k">SAFETY BY DESIGN</span>
+        <p>The flight controller keeps flying if the Jetson crashes. Arm, disarm and kill commands travel radio → flight
+          controller directly, never through the companion computer.</p>
+      </div>
+
+      <figure class="diagram">
+        <svg viewBox="0 0 880 380" role="img" aria-labelledby="drone-svg-title">
+          <title id="drone-svg-title">Following Drone system architecture: jeep comm board linked by NRF24 radio to the drone, whose modules share a CAN bus</title>
+          <defs>
+            <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" class="fill-line"/>
+            </marker>
+          </defs>
+          <!-- Jeep zone -->
+          <rect x="10" y="20" width="220" height="340" class="zone"/>
+          <text x="24" y="44" class="zone-label">IN THE JEEP</text>
+          <rect x="30" y="70" width="180" height="70" class="box"/>
+          <text x="120" y="98" class="box-title">Jeep computer</text>
+          <text x="120" y="118" class="box-sub">operator UI · USB</text>
+          <rect x="30" y="200" width="180" height="90" class="box hl"/>
+          <text x="120" y="228" class="box-title">Vehicle comm board</text>
+          <text x="120" y="248" class="box-sub">Pico Plus 2 W · GPS</text>
+          <text x="120" y="266" class="box-sub">NRF24L01+ PA/LNA</text>
+          <line x1="120" y1="140" x2="120" y2="200" class="link" marker-end="url(#arr)" marker-start="url(#arr)"/>
+          <text x="128" y="174" class="link-label">COBS + CRC-16</text>
+
+          <!-- Radio link -->
+          <line x1="210" y1="245" x2="318" y2="245" class="link radio" marker-end="url(#arr)" marker-start="url(#arr)"/>
+          <text x="264" y="232" class="link-label mid">2.4 GHz</text>
+
+          <!-- Drone zone -->
+          <rect x="300" y="20" width="570" height="340" class="zone"/>
+          <text x="314" y="44" class="zone-label">ON THE DRONE</text>
+          <rect x="320" y="200" width="150" height="90" class="box hl"/>
+          <text x="395" y="228" class="box-title">Radio module</text>
+          <text x="395" y="248" class="box-sub">Pico 2 · NRF24L01+</text>
+          <text x="395" y="266" class="box-sub">TCAN1042 CAN</text>
+
+          <rect x="510" y="70" width="170" height="70" class="box"/>
+          <text x="595" y="98" class="box-title">Jetson Orin Nano</text>
+          <text x="595" y="118" class="box-sub">mapping · follow logic</text>
+          <rect x="710" y="70" width="140" height="70" class="box"/>
+          <text x="780" y="98" class="box-title">ZED stereo</text>
+          <text x="780" y="118" class="box-sub">depth · odometry</text>
+          <line x1="680" y1="105" x2="710" y2="105" class="link" marker-end="url(#arr)" marker-start="url(#arr)"/>
+
+          <rect x="510" y="200" width="160" height="90" class="box"/>
+          <text x="590" y="228" class="box-title">Flight controller</text>
+          <text x="590" y="248" class="box-sub">Pico 2 · IMU / mag</text>
+          <text x="590" y="266" class="box-sub">4× ESC</text>
+          <rect x="700" y="200" width="150" height="90" class="box"/>
+          <text x="775" y="228" class="box-title">Sensor module</text>
+          <text x="775" y="248" class="box-sub">Pico 2 · baro · GPS</text>
+          <text x="775" y="266" class="box-sub">temp / humidity</text>
+
+          <!-- CAN bus -->
+          <line x1="330" y1="330" x2="850" y2="330" class="bus"/>
+          <text x="845" y="350" class="link-label end">CAN BUS</text>
+          <line x1="395" y1="290" x2="395" y2="330" class="link"/>
+          <line x1="590" y1="290" x2="590" y2="330" class="link"/>
+          <line x1="775" y1="290" x2="775" y2="330" class="link"/>
+          <path d="M 545 140 L 545 170 L 490 170 L 490 330" class="link" fill="none"/>
+          <!-- Kill path -->
+          <path d="M 470 225 L 510 225" class="link kill" marker-end="url(#arr)"/>
+          <text x="490" y="215" class="link-label mid kill-t">KILL</text>
+        </svg>
+        <figcaption>System overview — the jeep sends beacon and commands over NRF24, telemetry returns in ACK payloads; safety commands take the highest-priority CAN IDs (0x000–0x00F).</figcaption>
+      </figure>
+
+      <h3 class="sub">Milestones</h3>
+      <ol class="milestones">
+        <li class="current"><span class="m">M1</span><div><b>3D mapping</b><span>ZED + Jetson capture, SVO recording, mapping, post-processing. Software only.</span></div><em>in progress</em></li>
+        <li><span class="m">M2</span><div><b>Design &amp; simulation</b><span>Freeze the design; prove control, failsafes and following in Gazebo.</span></div></li>
+        <li><span class="m">M3</span><div><b>Flight bring-up</b><span>Build the drone; stabilization, altitude/position hold, auto takeoff and landing.</span></div></li>
+        <li><span class="m">M4</span><div><b>Manual flight</b><span>Operator flies from the jeep with assisted modes and manual override.</span></div></li>
+        <li><span class="m">M5</span><div><b>Vehicle following</b><span>The drone follows the jeep's GPS beacon and maps the trail.</span></div></li>
+      </ol>
+
+      <h3 class="sub">Sub-projects</h3>
+      <div class="cards">
+        <article class="card">
+          <header><span class="tag">M1 · JETSON</span><h4>3D Space Mapping</h4></header>
+          <p>Captures stereo video from the ZED, records SVO files, builds 3D maps from live or recorded data and exports
+            <code>.ply</code>/<code>.obj</code> for post-processing. Tested indoors first, then with the camera mounted on the jeep.</p>
+          <ul class="specs">
+            <li>Python 3.12 · uv</li><li>ZED SDK</li><li>HD720 @ 30 fps</li>
+          </ul>
+          <a class="repo" href="https://github.com/404-Engineering/3d_space_mapping" rel="noopener">3d_space_mapping ↗</a>
+        </article>
+        <article class="card">
+          <header><span class="tag">M3–M5 · ON DRONE</span><h4>NRF Module</h4></header>
+          <p>The drone's radio. Receives the jeep's beacon and commands, sends telemetry back in ACK payloads, puts
+            safety commands straight onto CAN and triggers hover after 1 s without a packet.</p>
+          <ul class="specs">
+            <li>Pico 2</li><li>NRF24L01+ PA/LNA</li><li>can2040 + TCAN1042</li><li>KiCad PCB</li>
+          </ul>
+          <a class="repo" href="https://github.com/404-Engineering/nrf_module" rel="noopener">nrf_module ↗</a>
+        </article>
+        <article class="card">
+          <header><span class="tag">M3–M5 · IN JEEP</span><h4>Drone Controller</h4></header>
+          <p>The vehicle comm board. Broadcasts the jeep's GPS position, velocity and heading as a 30-byte beacon at
+            5–10 Hz and relays arm, disarm, kill, takeoff, land and return-home commands from the jeep computer.</p>
+          <ul class="specs">
+            <li>Pico Plus 2 W</li><li>u-blox UBX-NAV-PVT</li><li>COBS + CRC-16</li><li>PlatformIO</li>
+          </ul>
+          <a class="repo" href="https://github.com/404-Engineering/drone_controller" rel="noopener">drone_controller ↗</a>
+        </article>
+      </div>
+
+      <p class="toolchain"><span>TOOLCHAIN</span> KiCad · Autodesk Fusion · Gazebo · JetPack · ZED SDK · PlatformIO</p>
+    </section>
+
+    <!-- Line Simulator -->
+    <section id="simulator" class="section">
+      <header class="section-head">
+        <span class="sheet">SHEET 03</span>
+        <h2>Line Simulator</h2>
+        <a class="repo" href="https://github.com/404-Engineering/line_simulator" rel="noopener">404-Engineering/line_simulator ↗</a>
+      </header>
+
+      <p class="intro">A physics-based simulator for packaging and filling lines. Conveyors, photoeyes, motors,
+        accumulation tables and bottles are prebuilt Godot components; a line is assembled in the editor from layout
+        drawings and measured dimensions. Real or emulated Allen-Bradley Logix PLCs drive the virtual line over
+        EtherNet/IP, and batch runs measure throughput, cycle times and bottlenecks per bottle format. Runs natively on macOS.</p>
+
+      <figure class="diagram">
+        <svg viewBox="0 0 880 230" role="img" aria-labelledby="sim-svg-title">
+          <title id="sim-svg-title">Line Simulator architecture: Godot simulation exchanges UDP JSON with a Python bridge, which reads and writes tags on Logix PLCs; experiments produce CSV metrics</title>
+          <rect x="10" y="40" width="230" height="110" class="box hl"/>
+          <text x="125" y="70" class="box-title">Godot 4.7 + Jolt</text>
+          <text x="125" y="92" class="box-sub">conveyors · photoeyes · motors</text>
+          <text x="125" y="110" class="box-sub">accumulation · bottles</text>
+          <text x="125" y="130" class="box-sub">fixed step · 100 Hz</text>
+
+          <line x1="240" y1="95" x2="330" y2="95" class="link" marker-end="url(#arr2)" marker-start="url(#arr2)"/>
+          <text x="285" y="82" class="link-label mid">UDP JSON</text>
+          <text x="285" y="115" class="link-label mid">localhost</text>
+
+          <rect x="330" y="40" width="210" height="110" class="box"/>
+          <text x="435" y="70" class="box-title">Python bridge</text>
+          <text x="435" y="92" class="box-sub">pycomm3 · tag map</text>
+          <text x="435" y="110" class="box-sub">signal ↔ tag bindings</text>
+          <text x="435" y="130" class="box-sub">latency metrics</text>
+
+          <line x1="540" y1="95" x2="630" y2="95" class="link" marker-end="url(#arr2)" marker-start="url(#arr2)"/>
+          <text x="585" y="82" class="link-label mid">EtherNet/IP</text>
+          <text x="585" y="115" class="link-label mid">≤ 20 ms</text>
+
+          <rect x="630" y="40" width="240" height="110" class="box"/>
+          <text x="750" y="70" class="box-title">Logix PLCs</text>
+          <text x="750" y="92" class="box-sub">ControlLogix · CompactLogix</text>
+          <text x="750" y="110" class="box-sub">or FactoryTalk Logix Echo</text>
+          <text x="750" y="130" class="box-sub">several per line</text>
+
+          <line x1="435" y1="150" x2="435" y2="180" class="link" marker-end="url(#arr2)"/>
+          <rect x="330" y="180" width="210" height="40" class="box"/>
+          <text x="435" y="205" class="box-sub strong">experiments → CSV metrics</text>
+          <defs>
+            <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" class="fill-line"/>
+            </marker>
+          </defs>
+        </svg>
+        <figcaption>Run the same PLC program against the virtual line that will run on the real one.</figcaption>
+      </figure>
+
+      <div class="targets">
+        <div><span class="v">≥ 500</span><span class="k">bottles stable at ≥ 100 Hz</span></div>
+        <div><span class="v">≤ 20 ms</span><span class="k">PLC round-trip, polling</span></div>
+        <div><span class="v">± 5 %</span><span class="k">throughput vs. real line</span></div>
+      </div>
+
+      <h3 class="sub">Roadmap</h3>
+      <ol class="phases">
+        <li class="current"><span class="m">P0</span><b>Spike</b><span>One conveyor, jitter-free bottles, one photoeye; read/write a Logix tag.</span></li>
+        <li><span class="m">P1</span><b>Core components</b><span>Conveyor, photoeye, motor, accumulation table, bottle spawner.</span></li>
+        <li><span class="m">P2</span><b>PLC I/O</b><span><code>Plc</code> node with tag bindings in the Inspector; several PLCs per line.</span></li>
+        <li><span class="m">P3</span><b>Metrics &amp; batch runs</b><span>Throughput, cycle time, blocked/starved time, buffer occupancy → CSV.</span></li>
+        <li><span class="m">P4</span><b>Builder ergonomics</b><span><code>@tool</code> conveyors that redraw and snap; live I/O panel.</span></li>
+        <li><span class="m">P5</span><b>Component library</b><span>Curves, merges, diverts, machines as parameterised black boxes.</span></li>
+        <li><span class="m">P6</span><b>First real line</b><span>A full line from drawings and PLC programs, validated against measured rates.</span></li>
+        <li class="stretch"><span class="m">P7</span><b>EtherNet/IP adapter</b><span>Appear to the PLC as remote I/O for scan-synchronous timing.</span></li>
+        <li class="stretch"><span class="m">P8</span><b>Format changeover</b><span>Guide rails, format parts and changeover time as scenarios.</span></li>
+      </ol>
+
+      <p class="toolchain"><span>TOOLCHAIN</span> Godot 4.7 · Jolt physics · GDScript · Python 3.11 · pycomm3 · uv</p>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="section">
+      <header class="section-head">
+        <span class="sheet">SHEET 04</span>
+        <h2>About</h2>
+      </header>
+      <div class="about">
+        <p>404 Engineering is run by an automation engineer who builds the tools and machines that don't exist yet.
+          The work spans the full stack: PCB design and embedded firmware, computer vision on edge hardware, PLC
+          integration and physics simulation.</p>
+        <p>Projects follow the same rules: a written design document before code, milestones with measurable targets,
+          and everything in public repositories.</p>
+        <a class="btn ghost" href="https://github.com/404-Engineering" rel="noopener">github.com/404-Engineering ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>© <span id="year">2026</span> 404 Engineering</span>
+    <span class="mono">REV A · DRAWN BY 404</span>
+  </footer>
+
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>
